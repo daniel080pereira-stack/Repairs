@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FixBase — Assistência Técnica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#172b3a;--muted:#6e7d89;--line:#e3e9ee;--blue:#1769e0;--blue2:#eaf2ff;--bg:#f6f8fb;--green:#138a67}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif}
+    header{height:76px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(24px,calc((100% - 1160px)/2));position:sticky;top:0;z-index:5}
+    .brand{display:flex;align-items:center;gap:11px;font:800 21px Manrope,sans-serif;letter-spacing:-.7px}.logo{height:38px;width:38px;border-radius:12px;background:var(--blue);color:white;display:grid;place-items:center;font-size:21px}
+    .brand small{display:block;font:500 11px 'DM Sans';letter-spacing:.2px;color:var(--muted);margin-top:1px}
+    .add{border:0;border-radius:12px;background:var(--blue);color:#fff;padding:12px 17px;font-weight:700;font-size:14px;cursor:pointer;box-shadow:0 5px 14px #1769e024}.add:hover{background:#0f58c4}
+    main{max-width:1160px;margin:0 auto;padding:44px 24px 70px}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:1.6px;font-weight:800;color:var(--blue)}
+    h1{font:800 clamp(30px,4vw,43px)/1.14 Manrope,sans-serif;letter-spacing:-1.6px;margin:13px 0 12px;max-width:720px}
+    .intro{color:var(--muted);font-size:16px;line-height:1.65;max-width:680px;margin:0}
+    .search-panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px;margin-top:32px;box-shadow:0 10px 35px #20364a08}
+    .panel-title{font:700 16px Manrope,sans-serif;margin:0 0 18px}.fields{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+    label{display:block;font-size:12px;font-weight:700;color:#526371;margin-bottom:8px}
+    select,input,textarea{width:100%;border:1px solid #dce4eb;border-radius:11px;padding:13px 14px;background:#fff;color:var(--ink);font:500 14px 'DM Sans',sans-serif;outline:none}
+    select:focus,input:focus,textarea:focus{border-color:#77a9f7;box-shadow:0 0 0 3px #1769e012}
+    .problem-row{margin-top:19px}.problem-row textarea{min-height:100px;resize:vertical;line-height:1.5}
+    .search-actions{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-top:15px}.hint{font-size:12px;color:var(--muted)}
+    .primary{background:var(--blue);color:#fff;border:0;border-radius:11px;padding:12px 19px;font-size:14px;font-weight:700;cursor:pointer}.secondary{background:#fff;border:1px solid var(--line);color:var(--ink);border-radius:11px;padding:11px 15px;font-weight:700;cursor:pointer}
+    .results-head{display:flex;justify-content:space-between;align-items:end;margin:34px 0 15px}.results-head h2{font:800 21px Manrope,sans-serif;margin:0 0 5px;letter-spacing:-.5px}.results-head p{margin:0;color:var(--muted);font-size:13px}
+    .count{font-size:12px;background:#eaf2ff;color:#175cc0;border-radius:20px;padding:7px 11px;font-weight:700}
+    #results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.result-card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:20px;transition:.2s}.result-card:hover{border-color:#b9d1f5;box-shadow:0 8px 24px #20364a0b}
+    .tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}.tag{font-size:11px;color:#536675;background:#f1f4f7;border-radius:6px;padding:5px 8px;font-weight:700}.tag.blue{color:#175cc0;background:#eaf2ff}
+    .result-card h3{font:700 17px Manrope,sans-serif;margin:0 0 9px}.result-card p{font-size:13px;line-height:1.6;color:#5c6d7a;margin:0 0 14px}
+    .solution{border-top:1px solid #edf0f3;padding-top:13px}.solution strong{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--green);margin-bottom:6px}.solution p{color:#314756;margin:0}
+    .empty{grid-column:1/-1;background:#fff;border:1px dashed #cbd6df;border-radius:16px;padding:35px;text-align:center;color:var(--muted);line-height:1.6}
+    .modal-backdrop{position:fixed;inset:0;background:#14253685;display:none;align-items:center;justify-content:center;padding:20px;z-index:10}.modal-backdrop.open{display:flex}.modal{width:min(680px,100%);max-height:90vh;overflow:auto;background:white;border-radius:20px;padding:25px;box-shadow:0 25px 80px #0003}
+    .modal-head{display:flex;justify-content:space-between;align-items:start;margin-bottom:20px}.modal-head h2{font:800 23px Manrope;margin:0 0 6px}.modal-head p{color:var(--muted);font-size:13px;margin:0}.close{border:0;background:#f1f4f7;border-radius:9px;width:34px;height:34px;font-size:20px;cursor:pointer}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.full{grid-column:1/-1}.modal textarea{min-height:86px;resize:vertical}.media-placeholder{border:1px dashed #cbd6df;border-radius:12px;padding:17px;color:var(--muted);font-size:12px;text-align:center;background:#fafbfd}
+    .modal-footer{display:flex;justify-content:flex-end;gap:9px;margin-top:20px}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#172b3a;color:white;padding:12px 18px;border-radius:12px;font-size:13px;display:none;z-index:20}
+    footer{border-top:1px solid var(--line);padding:22px;text-align:center;color:#87939d;font-size:12px}
+    @media(max-width:700px){header{padding:0 16px;height:68px}.brand{font-size:18px}.add{padding:10px 12px}main{padding:32px 16px 50px}.fields,#results,.form-grid{grid-template-columns:1fr}.full{grid-column:auto}.search-panel{padding:17px}.search-actions{align-items:flex-start;flex-direction:column}.results-head{align-items:start;gap:10px;flex-direction:column}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="brand"><div class="logo">⌁</div><div>FixBase<small>Conhecimento técnico partilhado</small></div></div>
+  <button class="add" id="openModal">＋ Adicionar solução</button>
+</header>
+<main>
+  <div class="eyebrow">Base de conhecimento · Assistência técnica</div>
+  <h1>Encontra a solução.<br>Repara com confiança.</h1>
+  <p class="intro">Pesquisa problemas e soluções já documentados pela equipa. Seleciona o aparelho, a marca e o modelo e descreve o que está a acontecer.</p>
+
+  <section class="search-panel">
+    <h2 class="panel-title">Identifica o equipamento</h2>
+    <div class="fields">
+      <div><label for="aparelho">Tipo de aparelho</label><select id="aparelho"><option value="">Todos os aparelhos</option></select></div>
+      <div><label for="marca">Marca</label><select id="marca"><option value="">Todas as marcas</option></select></div>
+      <div><label for="modelo">Modelo</label><select id="modelo"><option value="">Todos os modelos</option></select></div>
+    </div>
+    <div class="problem-row"><label for="problema">Qual é o problema?</label><textarea id="problema" placeholder="Ex.: A máquina liga, mas não tira café. Já verifiquei o depósito e continua sem funcionar..."></textarea></div>
+    <div class="search-actions"><span class="hint">A pesquisa procura palavras-chave nos problemas e nas soluções existentes.</span><button class="primary" id="searchBtn">⌕ &nbsp; Procurar soluções</button></div>
+  </section>
+
+  <div class="results-head"><div><h2>Resultados da base de conhecimento</h2><p id="resultText">Algumas soluções de exemplo para demonstração.</p></div><span class="count" id="count">5 soluções</span></div>
+  <section id="results"></section>
+</main>
+<footer>FixBase · Protótipo visual para uso interno da equipa técnica</footer>
+
+<div class="modal-backdrop" id="modalBackdrop">
+  <section class="modal">
+    <div class="modal-head"><div><h2>Adicionar solução</h2><p>Partilha uma resolução para ajudar o resto da equipa.</p></div><button class="close" id="closeModal" aria-label="Fechar">×</button></div>
+    <form id="addForm">
+      <div class="form-grid">
+        <div><label for="newAparelho">Tipo de aparelho *</label><input id="newAparelho" required placeholder="Ex.: Máquina de café"></div>
+        <div><label for="newMarca">Marca *</label><input id="newMarca" required placeholder="Ex.: Krups"></div>
+        <div><label for="newModelo">Modelo *</label><input id="newModelo" required placeholder="Ex.: EA8108"></div>
+        <div><label for="newTitulo">Título do problema *</label><input id="newTitulo" required placeholder="Ex.: Não sai café"></div>
+        <div class="full"><label for="newProblema">Descrição do problema *</label><textarea id="newProblema" required placeholder="O que aconteceu? O que já foi verificado?"></textarea></div>
+        <div class="full"><label>Fotografias e vídeos (futuramente)</label><div class="media-placeholder">＋ &nbsp; Zona reservada para anexar fotografias ou vídeos<br> <span style="opacity:.8">Não está ativa nesta versão de demonstração</span></div></div>
+        <div class="full"><label for="newResolucao">Resolução encontrada *</label><textarea id="newResolucao" required placeholder="Descreve os passos que resolveram o problema..."></textarea></div>
+      </div>
+      <div class="modal-footer"><button type="button" class="secondary" id="cancelModal">Cancelar</button><button type="submit" class="primary">Guardar solução</button></div>
+    </form>
+  </section>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const demo = [
+ {id:1,aparelho:"Máquina de café",marca:"Krups",modelo:"EA8108",titulo:"A máquina não tira café",problema:"A máquina liga, mas não sai café ou sai muito pouco.",palavras_chave:["não sai café","pouco café","bomba","descalcificação","obstrução"],resolucao:"Verificar o nível de água e o depósito. Executar o ciclo de descalcificação conforme o manual. Confirmar se os bicos de saída estão obstruídos. Se persistir, encaminhar para diagnóstico do circuito hidráulico."},
+ {id:2,aparelho:"Máquina de café",marca:"Moulinex",modelo:"Subito",titulo:"A máquina apresenta fuga de água",problema:"Existe água por baixo ou junto ao depósito.",palavras_chave:["fuga","água","depósito","vedante","junta"],resolucao:"Retirar da tomada e verificar se o depósito está corretamente encaixado e sem fissuras. Inspecionar visualmente as juntas acessíveis."},
+ {id:3,aparelho:"Torradeira",marca:"Becken",modelo:"BT-220",titulo:"A torradeira não aquece",problema:"A alavanca fica em baixo, mas as resistências não aquecem.",palavras_chave:["não aquece","resistência","alavanca","corrente","fusível"],resolucao:"Confirmar a tomada e o cabo de alimentação. Com o aparelho desligado da corrente, verificar se existem migalhas a bloquear o mecanismo. Se continuar sem aquecer, encaminhar para verificação técnica."},
+ {id:4,aparelho:"Varinha mágica",marca:"Moulinex",modelo:"Quickchef",titulo:"O motor funciona, mas a lâmina não roda",problema:"O motor faz ruído, mas o acessório não roda corretamente.",palavras_chave:["lâmina","não roda","motor","acoplamento","acessório"],resolucao:"Desligar da tomada antes de inspecionar. Retirar e voltar a encaixar o acessório, procurando desgaste ou danos visíveis no acoplamento."},
+ {id:5,aparelho:"Alisador de cabelo",marca:"Becken",modelo:"BHS-200",titulo:"O alisador não aquece",problema:"O indicador acende, mas as placas permanecem frias.",palavras_chave:["não aquece","placas frias","temperatura","indicador","cabo"],resolucao:"Verificar o cabo e a ficha quanto a danos visíveis e testar uma tomada funcional. Desligar imediatamente se existir cheiro a queimado ou cabo danificado."}
+];
+let articles = [...demo];
+const $ = id => document.getElementById(id);
+function unique(key, arr=articles){return [...new Set(arr.map(a=>a[key]).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt'))}
+function fillSelect(id, values, first){const el=$(id),old=el.value;el.innerHTML=`<option value="">${first}</option>`+values.map(v=>`<option>${escapeHtml(v)}</option>`).join('');if(values.includes(old))el.value=old}
+function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function updateFilters(){fillSelect('aparelho',unique('aparelho'),'Todos os aparelhos');fillSelect('marca',unique('marca'),'Todas as marcas');fillSelect('modelo',unique('modelo'),'Todos os modelos')}
+function render(list, searched=false){
+ $('count').textContent=`${list.length} ${list.length===1?'solução':'soluções'}`;
+ $('resultText').textContent=searched?'Resultados com base nos filtros e nas palavras-chave indicadas.':'Algumas soluções de exemplo para demonstração.';
+ if(!list.length){$('results').innerHTML='<div class="empty"><strong>Não encontrámos uma solução.</strong><br>Tenta outras palavras-chave ou adiciona uma nova solução à base de conhecimento.</div>';return}
+ $('results').innerHTML=list.map(a=>`<article class="result-card"><div class="tags"><span class="tag blue">${escapeHtml(a.aparelho)}</span><span class="tag">${escapeHtml(a.marca)}</span><span class="tag">${escapeHtml(a.modelo)}</span></div><h3>${escapeHtml(a.titulo)}</h3><p>${escapeHtml(a.problema)}</p><div class="solution"><strong>Resolução sugerida</strong><p>${escapeHtml(a.resolucao)}</p></div></article>`).join('');
+}
+function search(){const appliance=$('aparelho').value,brand=$('marca').value,model=$('modelo').value,terms=$('problema').value.toLocaleLowerCase('pt-PT').split(/\s+/).filter(t=>t.length>2);
+ const filtered=articles.filter(a=>(!appliance||a.aparelho===appliance)&&(!brand||a.marca===brand)&&(!model||a.modelo===model)&&(!terms.length||terms.some(t=>(a.titulo+' '+a.problema+' '+a.resolucao+' '+(a.palavras_chave||[]).join(' ')).toLocaleLowerCase('pt-PT').includes(t))));
+ render(filtered,true);
+}
+$('searchBtn').addEventListener('click',search);
+['aparelho','marca','modelo'].forEach(id=>$(id).addEventListener('change',search));
+$('problema').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.ctrlKey)search()});
+function openModal(){$('modalBackdrop').classList.add('open')}
+function closeModal(){$('modalBackdrop').classList.remove('open')}
+$('openModal').onclick=openModal;$('closeModal').onclick=closeModal;$('cancelModal').onclick=closeModal;
+$('modalBackdrop').addEventListener('click',e=>{if(e.target===$('modalBackdrop'))closeModal()});
+function toast(msg){$('toast').textContent=msg;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',3000)}
+$('addForm').addEventListener('submit',e=>{e.preventDefault();const item={id:Date.now(),aparelho:$('newAparelho').value.trim(),marca:$('newMarca').value.trim(),modelo:$('newModelo').value.trim(),titulo:$('newTitulo').value.trim(),problema:$('newProblema').value.trim(),resolucao:$('newResolucao').value.trim(),palavras_chave:[]};articles.unshift(item);updateFilters();closeModal();e.target.reset();search();toast('Solução adicionada nesta demonstração.');});
+updateFilters();render(articles);
+</script>
+</body>
+</html>
